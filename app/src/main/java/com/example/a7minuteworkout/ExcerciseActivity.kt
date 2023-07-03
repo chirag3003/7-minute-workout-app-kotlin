@@ -9,6 +9,15 @@ class ExcerciseActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityExcerciseBinding.inflate(layoutInflater)
-        setContentView(R.layout.activity_excercise)
+        setContentView(binding.root)
+        setSupportActionBar(binding.toolbarExercise)
+
+
+        if(supportActionBar != null){
+            supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        }
+        binding.toolbarExercise.setNavigationOnClickListener{
+            onBackPressed()
+        }
     }
 }
