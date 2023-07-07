@@ -8,8 +8,9 @@ import com.example.a7minuteworkout.databinding.ActivityExcerciseBinding
 
 class ExerciseActivity : AppCompatActivity() {
     private lateinit var binding: ActivityExcerciseBinding
-    private var restTimer: CountDownTimer? = null
+    private var timer: CountDownTimer? = null
     private var restProgress = 0;
+    private var exerciseProgress = 0;
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityExcerciseBinding.inflate(layoutInflater)
@@ -26,9 +27,27 @@ class ExerciseActivity : AppCompatActivity() {
         setRestProgressBar()
     }
 
+
+    private fun setExerciseProgressBar() {
+        binding.progressBar.progress = exerciseProgress
+        timer = object : CountDownTimer(30 * 1000, 1000) {
+            override fun onTick(p0: Long) {
+                exerciseProgress++;
+                binding.progressBar.progress = 10 - restProgress;
+                binding.tvTimer.text = (30 - exerciseProgress).toString()
+            }
+
+            override fun onFinish() {
+                exerciseProgress = 0;
+                setRestProgressBar()
+            }
+        }.start()
+
+    }
+
     private fun setRestProgressBar() {
         binding.progressBar.progress = restProgress;
-        restTimer = object : CountDownTimer(10000, 1000) {
+        timer = object : CountDownTimer(10000, 1000) {
             override fun onTick(p0: Long) {
                 restProgress++;
                 binding.progressBar.progress = 10 - restProgress;
@@ -36,17 +55,18 @@ class ExerciseActivity : AppCompatActivity() {
             }
 
             override fun onFinish() {
-                Toast
-                    .makeText(this@ExerciseActivity, "Starting the exercise", Toast.LENGTH_LONG)
-                    .show()
+                restProgress = 0;
+                setExerciseProgressBar()
             }
         }.start()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        restTimer?.cancel()
+        timer?.cancel()
         restProgress = 0;
+        exerciseProgress = 0;
+        timer = null
     }
 
 }
