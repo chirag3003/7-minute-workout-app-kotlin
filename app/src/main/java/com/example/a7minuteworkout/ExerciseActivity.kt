@@ -4,7 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.a7minuteworkout.databinding.ActivityExcerciseBinding
 
-class ExcerciseActivity : AppCompatActivity() {
+class ExerciseActivity : AppCompatActivity() {
     private lateinit var binding:ActivityExcerciseBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

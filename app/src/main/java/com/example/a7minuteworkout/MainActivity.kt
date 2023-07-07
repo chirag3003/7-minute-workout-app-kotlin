@@ -4,7 +4,6 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.FrameLayout
-import android.widget.Toast
 import com.example.a7minuteworkout.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -16,7 +15,7 @@ class MainActivity : AppCompatActivity() {
 
         val flStartButton: FrameLayout = binding.flStart
         flStartButton.setOnClickListener{
-            val intent = Intent(this@MainActivity,ExcerciseActivity::class.java)
+            val intent = Intent(this@MainActivity,ExerciseActivity::class.java)
             startActivity(intent)
         }
     }
