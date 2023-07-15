@@ -29,8 +29,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <!--TODO(Step 6 - Adding a view for the Get Ready Screen with a progress bar and remaining time text for the timer.)-->
-    <!--Step 6 START-->
     <FrameLayout
         android:id="@+id/flProgressBar"
         android:layout_width="100dp"
