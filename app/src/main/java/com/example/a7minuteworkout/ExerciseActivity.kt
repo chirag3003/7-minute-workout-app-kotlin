@@ -6,12 +6,13 @@ import android.os.CountDownTimer
 import android.speech.tts.TextToSpeech
 import android.view.View
 import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.a7minuteworkout.databinding.ActivityExcerciseBinding
 
 class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     private lateinit var binding: ActivityExcerciseBinding
 
-    private lateinit var ttl:TextToSpeech
+    private lateinit var ttl: TextToSpeech
 
     private var timer: CountDownTimer? = null
     private var restProgress = 0;
@@ -19,6 +20,8 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
 
     private lateinit var exerciseList: ArrayList<ExerciseModal>
     private var currentExercisePosition = 0;
+
+    private var exerciseAdapter: ExerciseStatusAdapter? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityExcerciseBinding.inflate(layoutInflater)
@@ -26,7 +29,7 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         setSupportActionBar(binding.toolbarExercise)
 
         //setting text to speech
-        ttl = TextToSpeech(this,this)
+        ttl = TextToSpeech(this, this)
 
         if (supportActionBar != null) {
             supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -38,8 +41,14 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
             onBackPressedDispatcher.onBackPressed()
         }
         setRestProgressBar()
+        setupExerciseStatusRecyclerView()
     }
 
+    private fun setupExerciseStatusRecyclerView(){
+        binding.rvExerciseStatus.layoutManager = LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false)
+        exerciseAdapter = ExerciseStatusAdapter(exerciseList!!)
+        binding.rvExerciseStatus.adapter = exerciseAdapter
+    }
 
     private fun setExerciseProgressBar() {
         binding.progressBar.progress = exerciseProgress
@@ -47,7 +56,7 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         binding.tvTitle.text = "Exercise: ${exercise.getName()}"
         binding.exerciseImage.setImageResource(exercise.getImage())
         binding.exerciseImage.visibility = View.VISIBLE
-        ttl.speak("${exercise.getName()}, for 30 seconds",TextToSpeech.QUEUE_FLUSH,null,"")
+        ttl.speak("${exercise.getName()}, for 30 seconds", TextToSpeech.QUEUE_FLUSH, null, "")
         timer = object : CountDownTimer(30 * 1000, 1000) {
             override fun onTick(p0: Long) {
                 exerciseProgress++;
@@ -56,7 +65,7 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
             }
 
             override fun onFinish() {
-                if(currentExercisePosition == exerciseList.size -1)
+                if (currentExercisePosition == exerciseList.size - 1)
                     return;
                 exerciseProgress = 0;
                 currentExercisePosition++;
