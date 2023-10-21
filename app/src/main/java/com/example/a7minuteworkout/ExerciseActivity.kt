@@ -1,5 +1,6 @@
 package com.example.a7minuteworkout
 
+import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.CountDownTimer
@@ -70,14 +71,19 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
                 exerciseProgress = 0;
                 currentExercisePosition++;
                 setRestProgressBar()
+                exercise.setIsCompleted(true)
+                exerciseAdapter?.notifyDataSetChanged()
             }
         }.start()
 
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun setRestProgressBar() {
         binding.progressBar.progress = restProgress;
         val exercise = exerciseList[currentExercisePosition]
+        exercise.setIsSelected(true)
+        exerciseAdapter?.notifyDataSetChanged()
         binding.tvTitle.text = "Get Ready For: ${exercise.getName()}"
         binding.exerciseImage.visibility = View.INVISIBLE
         timer = object : CountDownTimer(10000, 1000) {
