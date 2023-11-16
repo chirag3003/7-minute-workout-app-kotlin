@@ -1,6 +1,8 @@
 package com.example.a7minuteworkout
 
 import android.annotation.SuppressLint
+import android.app.Dialog
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.CountDownTimer
@@ -9,6 +11,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.a7minuteworkout.databinding.ActivityExcerciseBinding
+import com.example.a7minuteworkout.databinding.DialogCustomBackConfirmationBinding
 
 class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     private lateinit var binding: ActivityExcerciseBinding
@@ -39,7 +42,7 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         exerciseList = Constants.defaultExerciseList()
 
         binding.toolbarExercise.setNavigationOnClickListener {
-            onBackPressedDispatcher.onBackPressed()
+            customDialogForBackButton()
         }
         setRestProgressBar()
         setupExerciseStatusRecyclerView()
@@ -51,6 +54,24 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         binding.rvExerciseStatus.adapter = exerciseAdapter
     }
 
+    private fun customDialogForBackButton(){
+        val customDialog = Dialog(this)
+        val dialogBinding = DialogCustomBackConfirmationBinding.inflate(layoutInflater)
+        customDialog.setContentView(dialogBinding.root)
+        customDialog.setCanceledOnTouchOutside(false)
+        dialogBinding.tvYes.setOnClickListener{
+            this@ExerciseActivity.finish()
+            customDialog.dismiss()
+        }
+        dialogBinding.tvNo.setOnClickListener{
+            customDialog.dismiss()
+        }
+        customDialog.show()
+    }
+
+    override fun onBackPressed() {
+        customDialogForBackButton()
+    }
     private fun setExerciseProgressBar() {
         binding.progressBar.progress = exerciseProgress
         val exercise = exerciseList[currentExercisePosition]
@@ -66,8 +87,12 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
             }
 
             override fun onFinish() {
-                if (currentExercisePosition == exerciseList.size - 1)
+                if (currentExercisePosition == exerciseList.size - 1) {
+                    finish()
+                    val intent = Intent(this@ExerciseActivity   , FinishActivity::class.java)
+                    startActivity(intent)
                     return;
+                }
                 exerciseProgress = 0;
                 currentExercisePosition++;
                 setRestProgressBar()
