@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".BMI">
+    tools:context=".BMIActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar_bmi_activity"
@@ -113,5 +113,6 @@
         android:backgroundTint="@color/colorAccent"
         android:text="CALCULATE"
         android:textColor="#FFFFFF"
-        android:textSize="18sp" />
+        android:textSize="18sp"
+        style="@style/Widget.Material3.Button.ElevatedButton"/>
 </RelativeLayout>
